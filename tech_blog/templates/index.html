@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <!-- News jumbotron -->
+<div class="jumbotron text-center hoverable p-4 container">
+
+  <!-- Grid row -->
+  <div class="row">
+
+    <!-- Grid column -->
+    <div class="col-md-4 offset-md-1 mx-3 my-3">
+
+      <!-- Featured image -->
+      <div class="view overlay">
+        <img src="{{url_for('static',filename='profile_pics/jumbo.png')}}" class="img-fluid" alt="Sample image for first version of blog listing">
+        <a>
+          <div class="mask rgba-white-slight"></div>
+        </a>
+      </div>
+
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="col-md-7 text-md-left ml-3 mt-3">
+
+      <!-- Excerpt -->
+      
+        <h5 class="h5 pb-1"><i class="fas fa-desktop pr-1"></i> <span class="hd-title">Tech</span>Talk</h5>
+      
+
+      <h4 class="h4 mb-4">Lest talk about tecnologies</h4>
+
+      <p class="font-weight-normal">This is Tech Blog website Demo.We can perform all
+        the basic CURD operations like Create Post,Read Post, Update Post and Delete the post.
+        </p>
+        <p class="font-weight-normal">by: <a><strong>Shardul Rudraksh,Mishra Satyadev,Yogita Kandhare</strong> </p>
+
+      <a class="btn btn-outline " href="{{ url_for('users.register') }}"><span>Register</span></a>
+
+    </div>
+    <!-- Grid column -->
+
+  </div>
+  <!-- Grid row -->
+
+</div>
+<!-- News jumbotron -->
+    {# Go through each blog post #}
+</div>
+
+  <div class="container">
+
+    {# Go through each blog post #}
+    {% for post in blog_posts.items %}
+
+     <div class="card " >
+
+      <div class="card-body">
+
+
+        <h2 class="cust-title"><a class="card-title" href="  {{ url_for('blog_posts.blog_post', blog_post_id=post.id) }}">{{ post.title }}</a></h2>
+        <p class="cust-title"><a href="{{ url_for('users.user_posts', username=post.author.username) }}">Written By: {{ post.author.username }}</a>
+        <p>Published on: {{ post.date.strftime('%Y-%m-%d') }}</p>
+        <p class="card-text">{{ post.text[:100] }}...</p>
+        <a href="{{ url_for('blog_posts.blog_post', blog_post_id=post.id) }}" class="btn btn-outline">Read Blog Post</a>
+      </div>
+    </div> 
+ 
+
+   {% endfor %}
+   <br>
+
+   <nav aria-label="Page navigation example">
+     <ul class="pagination justify-content-center">
+       {% for page_num in blog_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if blog_posts.page == page_num %}
+          <li class="page-item disabled">
+            <a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+          </li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+          {% endif %}
+      {% endfor %}
+    </nav>
+
+
+
+
+{% endblock %}
